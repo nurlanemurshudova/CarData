@@ -17,6 +17,11 @@
               hansi kateqoriya secse sirf o kateqoriya gosterilsin
               daha sonra nomresin secsin 
               secilmis nomre listden silincek
+
+            Müştəri maşını seçərkən gün daxil etməldir.
+            Yəni neçə gün üçün kirayələmək istəyir. 
+            Gün daxil etdikdə daxil etdiyi günü maşınının bir günə olan qiymətinə vurub göstərmək lazımdır.
+            Qiyməti gördükdən sonra əşgər ki seçsə maşını bu zaman maşın listdən silinə bilər.
             */
 
             Car car = new Car();
@@ -43,87 +48,13 @@
                                 Console.WriteLine("3-Lux");
                                 int typeNum = int.Parse(Console.ReadLine());
                                 if (typeNum == 1)
-                                {
-                                    Console.WriteLine("Masin nomresin daxil et");
-                                    int carNumber = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masin markasini daxil et");
-                                    string brand = Console.ReadLine();
-                                    Console.WriteLine("Masin modelin daxil et");
-                                    string model = Console.ReadLine();
-                                    Console.WriteLine("Masin ilini daxil et");
-                                    int year = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masinin 1 gunluk kirayesinin qiymetini daxil et");
-                                    double price = double.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masinin aktivliyini daxil et");
-                                    bool isActive = Convert.ToBoolean(Console.ReadLine());
-
-                                    economCar = new EconomCar()
-                                    {
-                                        CarNumber = carNumber,
-                                        Brand = brand,
-                                        Model = model,
-                                        Year = year,
-                                        PriceForOneDay = price,
-                                        IsActive = isActive
-                                    };
-                                    economCar.AddCar(economCar);
-                                }
+                                    economCar.AddCar(economCar.GetCarData());
                                 else if (typeNum == 2)
-                                {
-                                    Console.WriteLine("Masin nomresin daxil et");
-                                    int carNumber = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masin markasini daxil et");
-                                    string brand = Console.ReadLine();
-                                    Console.WriteLine("Masin modelin daxil et");
-                                    string model = Console.ReadLine();
-                                    Console.WriteLine("Masin ilini daxil et");
-                                    int year = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masinin 1 gunluk kirayesinin qiymetini daxil et");
-                                    double price = double.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masinin aktivliyini daxil et");
-                                    bool isActive = Convert.ToBoolean(Console.ReadLine());
-
-                                    businessCar = new BusinessCar()
-                                    {
-                                        CarNumber = carNumber,
-                                        Brand = brand,
-                                        Model = model,
-                                        Year = year,
-                                        PriceForOneDay = price,
-                                        IsActive = isActive
-                                    };
-                                    businessCar.AddCar(businessCar);
-                                }
+                                    businessCar.AddCar(businessCar.GetCarData());
                                 else if (typeNum == 3)
-                                {
-                                    Console.WriteLine("Masin nomresin daxil et");
-                                    int carNumber = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masin markasini daxil et");
-                                    string brand = Console.ReadLine();
-                                    Console.WriteLine("Masin modelin daxil et");
-                                    string model = Console.ReadLine();
-                                    Console.WriteLine("Masin ilini daxil et");
-                                    int year = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masinin 1 gunluk kirayesinin qiymetini daxil et");
-                                    double price = double.Parse(Console.ReadLine());
-                                    Console.WriteLine("Masinin aktivliyini daxil et");
-                                    bool isActive = Convert.ToBoolean(Console.ReadLine());
-
-                                    luxCar = new LuxCar()
-                                    {
-                                        CarNumber = carNumber,
-                                        Brand = brand,
-                                        Model = model,
-                                        Year = year,
-                                        PriceForOneDay = price,
-                                        IsActive = isActive
-                                    };
-                                    luxCar.AddCar(luxCar);
-                                }
+                                    luxCar.AddCar(luxCar.GetCarData());
                                 else
-                                {
                                     Console.WriteLine("1 2 3 daxil et.");
-                                }
                                 break;
                             case 2:
                                 Console.WriteLine("1-Ekonom");
@@ -217,14 +148,26 @@
                             foreach (var item in myEconomCars)
                             {
                                 Console.WriteLine();
-                                Console.WriteLine($"{item.CarNumber}, {item.Brand} ,{item.Model} ,{item.Year} ,{item.PriceForOneDay} ,{item.IsActive}");
+                                Console.WriteLine($"masin nomresi: {item.CarNumber}, markasi: {item.Brand} ,modeli: {item.Model} ,ili: {item.Year} ,1 gunluk qiymeti: {item.PriceForOneDay} ,aktivliyi: {item.IsActive}");
                             }
                             Console.WriteLine("Secmek istediyin masinin nömrəsini daxil edin: ");
                             bool tryDelete = int.TryParse(Console.ReadLine(), out int carNum);
-                            if (tryDelete)
-                                economCar.DeleteCar(carNum);
-                            else
-                                Console.WriteLine("Bele masin tapilmadi");
+                            Console.WriteLine("Nece gunluk kiraye istediyinizi daxil edin: ");
+                            bool tryNum = int.TryParse(Console.ReadLine(), out int selectDay);
+                            foreach (var item in myEconomCars)
+                            {
+                                if (tryDelete && tryNum && item.IsActive == true)
+                                {
+                                    if (carNum == item.CarNumber)
+                                        Console.WriteLine($"{selectDay} gun kiraye qiymeti: {selectDay * item.PriceForOneDay} ");
+                                    Console.WriteLine("Secmek isteyirsenmi?");
+                                    bool check = Convert.ToBoolean(Console.ReadLine());
+                                    if (check)
+                                        economCar.DeleteCar(carNum);
+                                }
+                                else
+                                    Console.WriteLine("Bele masin tapilmadi");
+                            }
                         }
                         else if (getCars == 2)
                         {
@@ -232,14 +175,23 @@
                             foreach (var item in myBusinessCars)
                             {
                                 Console.WriteLine();
-                                Console.WriteLine($"{item.CarNumber}, {item.Brand} ,{item.Model} ,{item.Year} ,{item.PriceForOneDay} ,{item.IsActive}");
+                                Console.WriteLine($"masin nomresi: {item.CarNumber}, markasi: {item.Brand} ,modeli: {item.Model} ,ili: {item.Year} ,1 gunluk qiymeti: {item.PriceForOneDay} ,aktivliyi: {item.IsActive}");
                             }
                             Console.WriteLine("Secmek istediyin masinin nömrəsini daxil edin: ");
                             bool tryDelete = int.TryParse(Console.ReadLine(), out int carNum);
-                            if (tryDelete)
-                                businessCar.DeleteCar(carNum);
-                            else
-                                Console.WriteLine("Bele masin tapilmadi");
+                            Console.WriteLine("Nece gunluk kiraye istediyinizi daxil edin: ");
+                            bool tryNum = int.TryParse(Console.ReadLine(), out int selectDay);
+                            foreach (var item in myBusinessCars)
+                            {
+                                if (tryDelete && tryNum && item.IsActive == true)
+                                {
+                                    if (carNum == item.CarNumber)
+                                        Console.WriteLine($"{selectDay} gun kiraye qiymeti: {selectDay * item.PriceForOneDay} ");
+                                    economCar.DeleteCar(carNum);
+                                }
+                                else
+                                    Console.WriteLine("Bele masin tapilmadi");
+                            }
                         }
                         else if (getCars == 3)
                         {
@@ -247,14 +199,23 @@
                             foreach (var item in myLuxCars)
                             {
                                 Console.WriteLine();
-                                Console.WriteLine($"{item.CarNumber}, {item.Brand} ,{item.Model} ,{item.Year} ,{item.PriceForOneDay} ,{item.IsActive}");
+                                Console.WriteLine($"masin nomresi: {item.CarNumber}, markasi: {item.Brand} ,modeli: {item.Model} ,ili: {item.Year} ,1 gunluk qiymeti: {item.PriceForOneDay} ,aktivliyi: {item.IsActive}");
                             }
                             Console.WriteLine("Secmek istediyin masinin nömrəsini daxil edin: ");
                             bool tryDelete = int.TryParse(Console.ReadLine(), out int carNum);
-                            if (tryDelete)
-                                luxCar.DeleteCar(carNum);
-                            else
-                                Console.WriteLine("Bele masin tapilmadi");
+                            Console.WriteLine("Nece gunluk kiraye istediyinizi daxil edin: ");
+                            bool tryNum = int.TryParse(Console.ReadLine(), out int selectDay);
+                            foreach (var item in myLuxCars)
+                            {
+                                if (tryDelete && tryNum && item.IsActive == true)
+                                {
+                                    if (carNum == item.CarNumber)
+                                        Console.WriteLine($"{selectDay} gun kiraye qiymeti: {selectDay * item.PriceForOneDay} ");
+                                    economCar.DeleteCar(carNum);
+                                }
+                                else
+                                    Console.WriteLine("Bele masin tapilmadi");
+                            }
                         }
                         else
                             Console.WriteLine("1 2 3 daxil et.");
@@ -289,7 +250,32 @@
             var removeCar = cars.Find(x => x.CarNumber == number);
             cars.Remove(removeCar);
         }
+        public Car GetCarData()
+        {
+            Console.WriteLine("Masin nomresin daxil et");
+            int carNumber = int.Parse(Console.ReadLine());
+            Console.WriteLine("Masin markasini daxil et");
+            string brand = Console.ReadLine();
+            Console.WriteLine("Masin modelin daxil et");
+            string model = Console.ReadLine();
+            Console.WriteLine("Masin ilini daxil et");
+            int year = int.Parse(Console.ReadLine());
+            Console.WriteLine("Masinin 1 gunluk kirayesinin qiymetini daxil et");
+            double price = double.Parse(Console.ReadLine());
+            Console.WriteLine("Masinin aktivliyini daxil et");
+            bool isActive = Convert.ToBoolean(Console.ReadLine());
 
+
+            return new Car
+            {
+                CarNumber = carNumber,
+                Brand = brand,
+                Model = model,
+                Year = year,
+                PriceForOneDay = price,
+                IsActive = isActive
+            };
+        }
     }
     public class BusinessCar : Car
     {
